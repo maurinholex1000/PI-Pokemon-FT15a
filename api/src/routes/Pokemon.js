@@ -5,16 +5,18 @@ const router = Router();
 const axios = require('axios')
 
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
     //if tengo query param, hago una cosa, sino busco todos. PISTA: req.query
     
+    
+     
+     
     var apiPokemonsPromise = axios.get('https://pokeapi.co/api/v2/pokemon')
     var dbPokemonsPromise =  Pokemon.findAll()
-
     return Promise.all([
         apiPokemonsPromise,
         dbPokemonsPromise
-    ]).then(resultados => {
+    ]).then(async (resultados) => {
         var apiPokemons = resultados[0].data.results
         var dbPokemons = resultados[1]
 
@@ -34,6 +36,54 @@ router.get('/', (req, res, next) => {
             }
         })
         //aca los uno
+        if (req.query.hasOwnProperty('name')) {
+            const name=req.query.name
+            if(apiPokemons.some((e)=>e.name===name)){
+                var pokemon = await axios.get('https://pokeapi.co/api/v2/pokemon/'+name)
+                pokemon=pokemon.data
+                
+                return res.send({
+                    id:pokemon.id,
+                    name:pokemon.name,
+                    image: pokemon.sprites.other.dream_world.front_default,
+                    hp: pokemon.stats[0].base_stat,
+                    attack: pokemon.stats[1].base_stat,
+                    defense: pokemon.stats[2].base_stat,
+                    speed: pokemon.stats[5].base_stat,
+                    height:pokemon.height,
+                    weight:pokemon.weight
+                })
+            }
+
+            if(dbPokemons.some((e)=>e.name===name)){
+                var pokemon = await Pokemon.findAll({
+                    where:{name},
+                    include:Tipo
+                }) 
+
+                pokemon=pokemon[0]
+                pokemon2 = {
+                    id: pokemon.id,
+                    name: pokemon.name,
+                    hp: pokemon.hp,
+                    attack: pokemon.attack,
+                    defense: pokemon.defense,
+                    speed: pokemon.speed,
+                    height: pokemon.height,
+                    weight: pokemon.weight,
+                    tipos: pokemon.tipos.map((tipo) => {
+                        return {
+                            id: tipo.id,
+                            name: tipo.name
+                        }
+                    })
+                }
+
+               res.send(pokemon2)
+            }
+            return res.status(404).json({error:'el pokemon no existe'})
+            
+        }
         var allPokemons = apiPokemons.concat(dbPokemons)
         res.send(allPokemons)
     })
@@ -52,6 +102,7 @@ router.get('/:id', async (req, res, next) => {
             pokemon = await Pokemon.findByPk(id, {
                 include: Tipo
             })
+            //console.log(pokemon)
             pokemon = {
                 id: pokemon.id,
                 name: pokemon.name,
@@ -61,7 +112,7 @@ router.get('/:id', async (req, res, next) => {
                 speed: pokemon.speed,
                 height: pokemon.height,
                 weight: pokemon.weight,
-                tipos: pokemon.Tipos.map((tipo) => {
+                tipos: pokemon.tipos.map((tipo) => {
                     return {
                         id: tipo.id,
                         name: tipo.name
@@ -110,5 +161,37 @@ router.get('/:id', async (req, res, next) => {
     }
 
 })
+
+
+
+
+
+
+router.post('/', (req, res,next) => {
+    const {name, hp, attack, defense, speed, height, weight, tipos} = req.body
+
+    Pokemon.create({
+        id: uuidv4(),
+        name,
+        hp, 
+        attack, 
+        defense, 
+        speed, 
+        height, 
+        weight
+    })
+    .then(createdPokemon => {
+        return createdPokemon.setTipos(tipos)
+    })
+    .then((pokemonWithTipos) => {
+        res.json(pokemonWithTipos)
+    })
+    .catch(error => next(error))
+})
+
+
+
+
+
 
 module.exports = router;

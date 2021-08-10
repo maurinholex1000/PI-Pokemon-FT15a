@@ -19,10 +19,28 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
-
+const axios = require('axios')
+const { Tipo} = require('./src/db.js')
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
-  server.listen(3001, () => {
+  server.listen(3001, async() => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
+    try {
+      var apiTipos = await axios.get('https://pokeapi.co/api/v2/type')
+      apiTipos = apiTipos.data.results
+      
+      
+      for (const tipo of apiTipos) {
+        await  Tipo.create({          
+            name:tipo.name  
+        })
+      } 
+      console.log('Tipos cargados a la base de datos')
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+
   });
 });
