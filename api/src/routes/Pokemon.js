@@ -7,10 +7,6 @@ const axios = require('axios')
 
 router.get('/', async (req, res, next) => {
     //if tengo query param, hago una cosa, sino busco todos. PISTA: req.query
-    
-    
-     
-     
     var apiPokemonsPromise = axios.get('https://pokeapi.co/api/v2/pokemon')
     var dbPokemonsPromise =  Pokemon.findAll()
     return Promise.all([
@@ -30,7 +26,7 @@ router.get('/', async (req, res, next) => {
         })
         dbPokemons = dbPokemons.map((pokemon) => {
             return {
-                //id: character.id,
+                id: character.id,
                 name: pokemon.name,
                 //image: character.image
             }
@@ -41,7 +37,26 @@ router.get('/', async (req, res, next) => {
             if(apiPokemons.some((e)=>e.name===name)){
                 var pokemon = await axios.get('https://pokeapi.co/api/v2/pokemon/'+name)
                 pokemon=pokemon.data
+                tiposList = pokemon.types.map((tipo) => {
+                    const array=tipo.type.url.split('/')
+                    array.pop()
+                    return array.pop()
+                })
+                const array2=[]
+                for (const tipo of tiposList) {
+                 const listat = await axios.get('https://pokeapi.co/api/v2/type/' + tipo)
+                 array2.push(listat.data) 
+                }
                 
+    
+                const tipos = array2.map((tipo) => {
+                    return {
+                        id: tipo.id,
+                        name: tipo.name
+                    }
+                })
+
+
                 return res.send({
                     id:pokemon.id,
                     name:pokemon.name,
@@ -51,7 +66,8 @@ router.get('/', async (req, res, next) => {
                     defense: pokemon.stats[2].base_stat,
                     speed: pokemon.stats[5].base_stat,
                     height:pokemon.height,
-                    weight:pokemon.weight
+                    weight:pokemon.weight,
+                    tipo:tipos
                 })
             }
 
