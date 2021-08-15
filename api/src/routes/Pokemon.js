@@ -7,21 +7,44 @@ const axios = require('axios')
 
 router.get('/', async (req, res, next) => {
     //if tengo query param, hago una cosa, sino busco todos. PISTA: req.query
-    var apiPokemonsPromise = axios.get('https://pokeapi.co/api/v2/pokemon')
+    // var apiPokemonsPromise = [
+    //     axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=20"),
+    // ]
+
+    var apiPokemonsPromise = axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=40")
     var dbPokemonsPromise =  Pokemon.findAll()
+     
     return Promise.all([
         apiPokemonsPromise,
         dbPokemonsPromise
-    ]).then(async (resultados) => {
+    ]).then(async resultados => {
+        // console.log(apiPokemonsPromise)
         var apiPokemons = resultados[0].data.results
         var dbPokemons = resultados[1]
 
+        for (let i = 0; i < apiPokemons.length; i++) {
+            const name = apiPokemons[i].name
+            const pokemon= axios.get("https://pokeapi.co/api/v2/pokemon/"+name)
+            apiPokemons[i]=pokemon
+            
+        }
+
+        var promesas=await Promise.all(apiPokemons)
+        
+        //console.log(promesas)
         //aca los normalizo
-        apiPokemons = apiPokemons.map((pokemon) => {
+        apiPokemons = promesas.map((pokemon) => {
+
+            tiposList = pokemon.data.types.map((tipo) => {
+                return tipo.type.name
+            })
+        
+    
             return {
                 //id: character.id,
-                name: pokemon.name,
-                //image: character.image
+                name: pokemon.data.name,
+                image: pokemon.data.sprites.other.dream_world.front_default,
+                tipo: tiposList
             }
         })
         dbPokemons = dbPokemons.map((pokemon) => {
