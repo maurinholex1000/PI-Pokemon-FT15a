@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
     // ]
 
     var apiPokemonsPromise = axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=40")
-    var dbPokemonsPromise =  Pokemon.findAll()
+    var dbPokemonsPromise =  Pokemon.findAll({include:Tipo})
      
     return Promise.all([
         apiPokemonsPromise,
@@ -36,22 +36,30 @@ router.get('/', async (req, res, next) => {
         apiPokemons = promesas.map((pokemon) => {
 
             tiposList = pokemon.data.types.map((tipo) => {
-                return tipo.type.name
+                return{name: tipo.type.name}
             })
         
     
             return {
-                //id: character.id,
+                id: pokemon.data.id,
                 name: pokemon.data.name,
                 image: pokemon.data.sprites.other.dream_world.front_default,
-                tipo: tiposList
+                attack:pokemon.data.stats[1].base_stat,
+                tipos: tiposList
             }
         })
         dbPokemons = dbPokemons.map((pokemon) => {
+        //console.log(pokemon.tipos)
             return {
-                id: character.id,
+                id: pokemon.id,
                 name: pokemon.name,
-                //image: character.image
+                image: pokemon.image,
+                attack:pokemon.attack,
+                tipos: pokemon.tipos.map((tipo) => {
+                    return {name: tipo.name}
+                    
+                })
+                
             }
         })
         //aca los uno
@@ -145,6 +153,7 @@ router.get('/:id', async (req, res, next) => {
             pokemon = {
                 id: pokemon.id,
                 name: pokemon.name,
+                image: pokemon.image,
                 hp: pokemon.hp,
                 attack: pokemon.attack,
                 defense: pokemon.defense,
@@ -207,11 +216,12 @@ router.get('/:id', async (req, res, next) => {
 
 
 router.post('/', (req, res,next) => {
-    const {name, hp, attack, defense, speed, height, weight, tipos} = req.body
+    const {name,image, hp, attack, defense, speed, height, weight, tipos} = req.body
 
     Pokemon.create({
         id: uuidv4(),
         name,
+        image,
         hp, 
         attack, 
         defense, 
