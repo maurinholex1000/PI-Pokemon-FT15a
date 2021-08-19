@@ -48,82 +48,88 @@ export default function CreatePokemon(){
         alert('se agrego el pokemon')
     }
     return <form onSubmit={handleSubmit}>
-        <p>
-        <label htmlFor="">Nombre</label>
+        <div className="thumb-container-form">
+        <div className="item">    
+        <p className="item">
+        <h3 htmlFor="">Nombre</h3>
         <input
             type="text"
             name="name"
             value={pokemon.name}
             onChange={onInputChange}/>
         </p>
-        <p> 
-        <label htmlFor="">Imagen</label>
+        <p className="item"> 
+        <h3 htmlFor="">Imagen</h3>
         <input
             type="text"
             name="image"
             value={pokemon.image}
             onChange={onInputChange}/>
         </p>
-        <p> 
-        <label htmlFor="">Hp</label>
+        <p className="item"> 
+        <h3 htmlFor="">Hp</h3>
         <input
             type="text"
             name="hp"
             value={pokemon.hp}
             onChange={onInputChange}/>
         </p>
-        <p> 
-        <label htmlFor="">Fuerza</label>
+        
+       
+        <p className="item"> 
+        <h3 htmlFor="">Fuerza</h3>
         <input
             type="text"
             name="attack"
             value={pokemon.attack}
             onChange={onInputChange}/>
         </p>
-        <p> 
-        <label htmlFor="">Defensa</label>
+        <p className="item"> 
+        <h3 htmlFor="">Defensa</h3>
         <input
             type="text"
             name="defense"
             value={pokemon.defense}
             onChange={onInputChange}/>
         </p>
-        <p> 
-        <label htmlFor="">Velocidad</label>
+        <p className="item"> 
+        <h3 htmlFor="">Velocidad</h3>
         <input
             type="text"
             name="speed"
             value={pokemon.speed}
             onChange={onInputChange}/>
         </p>
-        <p> 
-        <label htmlFor="">Altura</label>
+        
+        <p className="item"> 
+        <h3 htmlFor="">Altura</h3>
         <input
             type="text"
             name="height"
             value={pokemon.height}
             onChange={onInputChange}/>
         </p>
-        <p> 
-        <label htmlFor="">Peso</label>
+        <p className="item"> 
+        <h3 htmlFor="">Peso</h3>
         <input
             type="text"
             name="weight"
             value={pokemon.weight}
             onChange={onInputChange}/>
         </p>
-        
+        </div>
         <div>
             {tipos.map(tipo => {
-                return <div>
+                return <div class="item">
                     {tipo.name}
-                    <buttton 
+                    <button 
                         onClick={() => agregarTipoAlPokemon(tipo.id)}>
-                            Agregar al pokemon
-                    </buttton>
+                            AGREGAR
+                    </button>
                 </div>
             })}
         </div>
         <input type="submit"/>
+     </div>
     </form>
 }

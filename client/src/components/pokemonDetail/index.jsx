@@ -17,22 +17,59 @@ export default function PokemonDetail() {
         getPokemonById(id)
     }, [])
 
+    
+        
+    
+
+    
     return <div>
         {   
-        pokemon && pokemon.tipos && <div>
-            <div>{pokemon.name}</div>
-            <img src={pokemon.image} alt="" />
-            <div>{pokemon.id}</div>
-            <div>{pokemon.hp}</div>
-            <div>{pokemon.attack}</div>
-            <div>{pokemon.defense}</div>
-            <div>{pokemon.speed}</div>
-            <div>{pokemon.height}</div>
-            <div>{pokemon.weight}</div>
-            {console.log(pokemon.tipos)}
-            {   
-                pokemon.tipos.map(tipo => <div> {tipo.name} </div>)
-            }
+        pokemon && pokemon.tipos && <div class= {`${pokemon.tipos[0].name}`+" thumb-container"} >
+            <h3>{pokemon.name}</h3>
+            <img  src={pokemon.image} alt="" />
+            <div >
+            <div class="item">    
+             <div class="item">
+              <h3 >ID:</h3>
+              <div >{pokemon.id}</div>
+             </div>
+            </div>
+            <div class="item">
+             <div class="item">
+              <h3>HP:</h3>
+              <div>{pokemon.hp}</div>
+             </div> 
+             <div class="item">
+              <h3>Fuerza:</h3>
+              <div>{pokemon.attack}</div>
+             </div>
+             <div class="item">   
+              <h3>Defensa:</h3>
+              <div>{pokemon.defense}</div>
+             </div>
+             <div class="item"> 
+              <h3>Velocidad:</h3>
+              <div>{pokemon.speed}</div>
+             </div>  
+            </div>
+            <div class="item">
+            <div class="item">
+              <h3>Altura:</h3>
+              <div>{pokemon.height}</div>
+             </div>
+             <div class="item">    
+              <h3>Peso:</h3>
+              <div>{pokemon.weight}</div>
+             </div> 
+              {console.log(pokemon.tipos)}
+             <div class="item">
+              <h3>Tipos:</h3>
+              {   
+                  pokemon.tipos.map(tipo => <div> {tipo.name} </div>)
+              }
+             </div>
+            </div>
+            </div>
         </div>
         }
     </div>

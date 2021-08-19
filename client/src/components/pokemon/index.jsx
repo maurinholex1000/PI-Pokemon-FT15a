@@ -1,11 +1,15 @@
-export default function Pokemon({name, image,tipos}) {
-    return <div>
+export default function Pokemon({name, image,attack,tipos}) {
+    console.log(tipos)
+    const style = tipos[0].name+" thumb-container"
+    return <div className={style}>
           
-        <p>{name}</p>
+        
         <img src={image} alt="no tengo imagen :/"/>
-        
-        {tipos.map(tipo => <div> {tipo.name} </div>)}
-        
+        <p>{attack}</p>
+        <div className="detail-wrapper">
+         <h3>{name}</h3>
+         {tipos.map(tipo => <small> {tipo.name} </small>)}
+        </div>
           
         </div>
 }

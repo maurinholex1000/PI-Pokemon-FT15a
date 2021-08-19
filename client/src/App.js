@@ -3,39 +3,85 @@ import {useEffect} from 'react'
 import Nav from './components/nav'
 import PokemonDetail from './components/pokemonDetail'
 import Pokemons from './components/pokemons'
+import Pokemon from './components/pokemon'
+import PokemonsFilter from './components/pokemonsFilter'
 import CreatePokemon from './components/createPokemon'
+import Searchbar from './components/searchBar'
 import {useDispatch} from 'react-redux'
+import { useState } from 'react'
 import {getPokemons} from './actions/index'
+import { getPokemon } from './actions/index'
+import { useSelector } from 'react-redux'
 import './App.css';
+import './Pagination'
+
 
 function App() {
-
+  var pokemon = useSelector(state => state.pokemon)
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch()
-
+ 
   useEffect(() => {
     dispatch(getPokemons())
   }, [])
 
+  // const onChange = (e) => {
+  //   setSearch(e.target.value);
+  //   // if (e.target.value.length === 0) {
+  //   //   onSearch(null);
+  //   // }
+  // };
+
+  function buscar(e){
+    dispatch(getPokemon(e.target.value))
+}
+
+
+
+
   return (
+    <div className="app-contaner">
     <BrowserRouter>
+    <Link to="/">
+       <Nav />
+      </Link>
     <div className="App">
-      <Nav />
       <Link to="/agregar">
-      <button> AGREGAR POKEMON </button>
+      <button className="item-boton"> AGREGAR POKEMON</button>
       </ Link>
+      <div className="searchbar">
+        <input placeholder="Buscar pokemon..." onChange={buscar} />
+      </div>
+      <Link to="/search">
+      <div className="searchbar-btn">
+        <button >Buscar</button>
+      </div>
+      </Link>
+      {/*  */}
       <Switch>
         <Route path="/pokemon/:id">
           <PokemonDetail />
         </Route>
         <Route exact path="/">
-          <Pokemons />
+             <Pokemons />
         </Route>
-        <Route exact path="/agregar">
+        
+        <Route path="/search">
+         <Searchbar/>
+        </Route>
+        
+        <Route path="/agregar">
           <CreatePokemon />
         </Route>
+
+        <Route>
+         <PokemonsFilter/>
+        </Route>
+
         </Switch>
     </div>
     </ BrowserRouter >
+    </div>
   );
 }
 
