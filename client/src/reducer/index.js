@@ -5,7 +5,8 @@ import {GET_POKEMONS,GET_POKEMON, GET_POKEMON_FILTER,GET_POKEMON_API} from '../a
 //primero, seteamos nuestro estado inicial
 var initialState = {
     pokemons: [],
-    pokemon: []
+    pokemon: [],
+    pokemonsfilter:[]
 }
 //Esta funcion reducer va a llamarse con el initialState
 //como valor predeterminado, y segundo parametro
@@ -32,14 +33,14 @@ function reducer(state = initialState, action) {
             //aca ejecutamos la logica
             return {
             ...state,
-            pokemons: action.payload
+            pokemonsfilter: action.payload
         }
          
         case GET_POKEMON_API:
             //aca ejecutamos la logica
             return {
             ...state,
-            pokemons: action.payload
+            pokemonsfilter: action.payload
         }
         
         default: return state

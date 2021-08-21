@@ -108,7 +108,7 @@ export default function Pokemons() {
         <button class="item-boton" onClick={DescporNombre}>Ordenar Desc por Nombre</button>
         <button class="item-boton" onClick={AscporFuerza}>Ordenar Asc por Fuerza</button>
         <button class="item-boton" onClick={DescporFuerza}>Ordenar Desc por Fuerza</button>
-        <span > By Type:</span>
+        {/* <span > By Type:</span>
                 <select className="type" name="type"  onChange={filter}>
                     <option value='null'>null</option>
                     {tipos && tipos.map((c, index) => (
@@ -121,8 +121,12 @@ export default function Pokemons() {
                     <option value="all">All</option>
                     <option value="api">Api Poke</option>
                     <option value="db">Created Poke</option>
-            </select>  
-        <PokemonsFilter       />
+            </select>   */}
+        <Link to='/filter' style={{textDecoration:'none'}}>
+        <button class='item-boton'>Filtrar</button>
+        </Link>
+            
+        
         </div>
         <div className="pokemon-container">
                <div className="all-container">  
@@ -132,7 +136,7 @@ export default function Pokemons() {
                 currentPokemons.map((pokemon) => {
                 console.log(currentPokemons)
                 return <Link to={`/pokemon/${pokemon?.id}`} style={{textDecoration:'none'}}>
-                          <Pokemon key={pokemon?.id} name={pokemon?.name} image={pokemon?.image} attack={pokemon?.attack} tipos={pokemon?.tipos} />
+                          <Pokemon key={pokemon?.id} name={pokemon?.name} image={pokemon?.image} attack={pokemon?.attack} tipos={pokemon?.tipos} special />
                        </Link>
 
             })

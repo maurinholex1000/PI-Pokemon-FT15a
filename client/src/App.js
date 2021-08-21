@@ -25,18 +25,10 @@ function App() {
     dispatch(getPokemons())
   }, [])
 
-  // const onChange = (e) => {
-  //   setSearch(e.target.value);
-  //   // if (e.target.value.length === 0) {
-  //   //   onSearch(null);
-  //   // }
-  // };
-
+  
   function buscar(e){
     dispatch(getPokemon(e.target.value))
 }
-
-
 
 
   return (
@@ -50,7 +42,7 @@ function App() {
       <button className="item-boton"> AGREGAR POKEMON</button>
       </ Link>
       <div className="searchbar">
-        <input placeholder="Buscar pokemon..." onChange={buscar} />
+        <input onChange={buscar} placeholder="Buscar pokemon..."  />
       </div>
       <Link to="/search">
       <div className="searchbar-btn">
@@ -74,7 +66,7 @@ function App() {
           <CreatePokemon />
         </Route>
 
-        <Route>
+        <Route path="/filter">
          <PokemonsFilter/>
         </Route>
 

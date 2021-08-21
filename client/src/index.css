@@ -1,4 +1,5 @@
 body {
+  background-image: url(https://assets.pokemon.com//assets/cms2-es-es/img/misc/virtual-backgrounds/sword-shield/pokemon-in-the-wild.png) ;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -43,12 +44,19 @@ code {
   background-color:#E0F1FD;
 }
 
+
+.App{
+  width: 100%;
+}
+
 .app-contaner {
   display: flex;
+  align-items: flex-start;
+  margin-top: initial;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 3rem 0.5rem;
 }
 
@@ -163,3 +171,19 @@ h3 {
   text-align: center;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.089);
 }
+
+.forma {
+  background-color: #1d1a1a48;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 4px solid #b15656;
+  border-radius:2rem;
+ 
+}
+
+.boton-form{
+  background-color:#b15656;
+  border-radius: 5px;
+}
+

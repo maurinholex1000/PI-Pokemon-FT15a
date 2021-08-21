@@ -32,6 +32,7 @@ export const getPokemonFilter = (types, array) => (dispatch) =>{
     console.log(array)
     const type1 = new RegExp(types);
     const res = array.filter(c => c.tipos[0].name.match(type1));
+    // const res = array.filter(c => c.tipos(d =>d.name.match(type1)));
     dispatch({type: GET_POKEMON_FILTER, payload: [...res]})
   
   };
@@ -49,6 +50,7 @@ export const getPokemonFilter = (types, array) => (dispatch) =>{
     if(creator === 'all') {
       dispatch({type: GET_POKEMON_API, payload: [...array]})
     }
+   
     if(creator === 'null') {
       dispatch({type: GET_POKEMON_API, payload: []})
     }
